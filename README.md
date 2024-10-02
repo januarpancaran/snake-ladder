@@ -5,7 +5,7 @@ A simple Snake Ladder game built using Vue.js
 ## Prerequisite
 1. Node.js >= v18.3 
 
-## Initial Setup
+## Develop
 1. Fork this repo
 2. Clone your forked repo
 3. Install npm dependencies
