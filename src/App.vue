@@ -1,7 +1,7 @@
 <template>
   <fwb-navbar solid>
     <template #logo>
-      <fwb-navbar-logo alt="UNNES" image-url="../src/assets/unnes.png" link="/">
+      <fwb-navbar-logo alt="Snake Ladder Logo" image-url="../src/assets/snake-ladder.png" link="/">
         Snake Ladder
       </fwb-navbar-logo>
     </template>
