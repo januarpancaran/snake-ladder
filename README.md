@@ -1,5 +1,5 @@
 # Snake Ladder Game
-A simple Snake Ladder built using Vue.js
+A simple Snake Ladder game built using Vue.js
 <br>
 
 ## Prerequisite
