@@ -2,7 +2,7 @@
   <fwb-navbar solid>
     <template #logo>
       <fwb-navbar-logo alt="UNNES" image-url="../src/assets/unnes.png" link="/">
-        Matematika Diskrit
+        Snake Ladder
       </fwb-navbar-logo>
     </template>
     <template #default="{ isShowMenu }">
