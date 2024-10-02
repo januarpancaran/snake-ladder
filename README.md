@@ -8,7 +8,9 @@ A simple Snake Ladder built using Vue.js
 ## Develop
 ### Initial Setup
 `git clone https://github.com/januarpancaran/snake-ladder.git`
+
 `cd snake-ladder`
+
 `npm install`
 <br>
 
