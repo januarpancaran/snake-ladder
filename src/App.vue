@@ -20,6 +20,7 @@
       </div>
     </template>
   </fwb-navbar>
+  <router-view />
 </template>
 
 <script setup>
