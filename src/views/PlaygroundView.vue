@@ -4,14 +4,14 @@
       <div
         v-for="(player, index) in playerProfiles"
         :key="index"
-        :class="['playerProfiles', color[index], 'position-' + player.position]"
+        :class="['playerProperties', color[index], 'position-' + player.position]"
       ></div>
     </div>
 
     <div class="player-wrapper">
       <div class="player-list">
         <div
-          v-for="(player, index) in playerProfiles"
+          v-for="(player, index) in playerProperties"
           :key="index"
           :class="['player', color[index], { active: index === turn }]"
         >
@@ -24,7 +24,7 @@
           type="button"
           class="button add-player bg-yellow-500"
           @click="addPlayer"
-          :disabled="playerProfiles.length >= 3"
+          :disabled="playerProperties.length >= 3"
         >
           Add Player
         </button>
@@ -66,11 +66,10 @@
 export default {
   data() {
     return {
-      playerProfiles: [{ position: -1, isFinish: false }],
+      playerProperties: [{ position: -1, isFinish: false }],
       turn: 0,
       diceRolling: false,
-      diceA: 0,
-      diceB: 0,
+      diceValue: 0,
       diceDisabled: true,
       gameStarted: false,
       color: [
@@ -116,34 +115,31 @@ export default {
   },
   computed: {
     diceResult() {
-      return this.diceA + this.diceB
+      return this.diceValue
     }
   },
   methods: {
     rollDice() {
       this.diceRolling = true
-      this.diceA = Math.ceil(Math.random() * 6)
-      this.diceB = 0
+      this.diceValue = Math.ceil(Math.random() * 6)
       this.diceAudio.play()
       this.diceAudio.onended = () => {
-        setTimeout(() => {
-          this.diceRolling = false
-          this.movePlayer()
-        }, 1000)
+        this.diceRolling = false
+        this.movePlayer()
       }
     },
     movePlayer() {
-      const diceSum = this.diceA + this.diceB
-      let currentPlayer = this.playerProfiles[this.turn]
+      const diceVal = this.diceValue
+      let currentPlayer = this.playerProperties[this.turn]
 
       if (currentPlayer.position === -1) {
-        if (diceSum === 6) {
+        if (diceVal === 6) {
           currentPlayer.position = 0
         } else {
           this.updateTurn()
         }
       } else {
-        currentPlayer.position += diceSum
+        currentPlayer.position += diceVal
 
         const snakePosition = this.snakes[currentPlayer.position]
         const ladderPosition = this.ladders[currentPlayer.position]
@@ -157,29 +153,28 @@ export default {
           alert(`Player-${this.turn + 1} wins!`)
           this.updateTurn()
         } else {
-          this.updateTurn(diceSum !== 6)
+          this.updateTurn(diceVal !== 6)
         }
       }
       this.disabled = false
     },
     addPlayer() {
-      this.playerProfiles.push({ position: -1, isFinish: false })
+      this.playerProperties.push({ position: -1, isFinish: false })
     },
     startGame() {
       this.diceDisabled = false
       this.gameStarted = true
     },
     resetGame() {
-      this.playerProfiles = [{ position: -1, isFinish: false }]
+      this.playerProperties = [{ position: -1, isFinish: false }]
       this.turn = 0
-      this.diceA = 0
-      this.diceB = 0
+      this.diceValue = 0
       this.gameStarted = false
       this.diceDisabled = true
     },
     updateTurn(skipTurn = true) {
       if (skipTurn) {
-        this.turn = (this.turn + 1) % this.playerProfiles.length
+        this.turn = (this.turn + 1) % this.playerProperties.length
       }
       this.diceDisabled = false
     }
