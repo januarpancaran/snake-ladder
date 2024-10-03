@@ -2,7 +2,7 @@
   <div>
     <div id="board">
       <div
-        v-for="(player, index) in playerProfiles"
+        v-for="(player, index) in playerProperties"
         :key="index"
         :class="['playerProperties', color[index], 'position-' + player.position]"
       ></div>
