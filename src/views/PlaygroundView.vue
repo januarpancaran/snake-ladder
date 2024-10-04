@@ -150,7 +150,9 @@ export default {
         if (currentPlayer.position >= 100) {
           currentPlayer.position = 100
           currentPlayer.isFinish = true
-          alert(`Player-${this.turn + 1} wins!`)
+          setTimeout(() => {
+            alert(`Player-${this.turn + 1} wins!`)
+          }, 1000)
           this.updateTurn()
         } else {
           this.updateTurn(diceVal !== 6)
