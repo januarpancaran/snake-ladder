@@ -49,7 +49,7 @@
           class="button roll-dice bg-gray-500"
           style="color: white"
           @click="rollDice"
-          :disabled="diceDisabled"
+          :disabled="diceDisabled || diceRolling"
         >
           Roll Dice
         </button>
