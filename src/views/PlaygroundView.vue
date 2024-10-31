@@ -121,9 +121,9 @@ export default {
   methods: {
     rollDice() {
       this.diceRolling = true
-      this.diceValue = Math.ceil(Math.random() * 6)
       this.diceAudio.play()
       this.diceAudio.onended = () => {
+        this.diceValue = Math.ceil(Math.random() * 6)
         this.diceRolling = false
         this.movePlayer()
       }
