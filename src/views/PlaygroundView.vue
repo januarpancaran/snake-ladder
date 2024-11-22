@@ -139,32 +139,53 @@ export default {
       }
     },
     movePlayer() {
-      const diceVal = this.diceValue
-      let currentPlayer = this.playerProperties[this.turn]
-        currentPlayer.position += diceVal
+      const diceVal = this.diceValue;
+      const currentPlayer = this.playerProperties[this.turn];
+      let targetPosition = currentPlayer.position + diceVal; 
+      let currentStep = currentPlayer.position;
 
-        const snakePosition = this.snakes[currentPlayer.position]
-        const ladderPosition = this.ladders[currentPlayer.position]
+      const moveStep = () => {
+        if (currentStep < targetPosition) {
+          currentStep++;
+          currentPlayer.position = currentStep;
 
-        if (snakePosition) currentPlayer.position = snakePosition
-        if (ladderPosition) currentPlayer.position = ladderPosition
-
-        if (currentPlayer.position >= 100) {
-          currentPlayer.position = 100
-          currentPlayer.isFinish = true
-          setTimeout(() => {
-            alert(`Player-${this.turn + 1} wins!`)
-          }, 1000)
-          this.updateTurn()
+          setTimeout(moveStep, 300);
         } else {
-          this.updateTurn(diceVal !== 6)
+          const snakePosition = this.snakes[currentStep];
+          const ladderPosition = this.ladders[currentStep];
+
+          if (snakePosition) {
+            currentPlayer.position = snakePosition;
+            finalizeMove();
+          } else if (ladderPosition) {
+            currentPlayer.position = ladderPosition;
+            finalizeMove();
+          } else {
+            finalizeMove();
+          }
         }
-      this.disabled = false
+      };
+
+      const finalizeMove = () => {
+        if (currentPlayer.position >= 100) {
+          currentPlayer.position = 100;
+          currentPlayer.isFinish = true;
+          setTimeout(() => {
+            alert(`Player-${this.turn + 1} wins!`);
+          }, 1000);
+        } else {
+          this.updateTurn(diceVal !== 6);
+        }
+        this.disabled = false;
+      };
+
+      this.disabled = true; 
+      moveStep();
     },
     addPlayer() {
       const playerIndex = this.playerProperties.length; 
       const pawnImage = this.pawnImages[playerIndex % this.pawnImages.length];
-      this.playerProperties.push({ position: -1, isFinish: false, imageUrl: pawnImage }); 
+      this.playerProperties.push({ position: 0, isFinish: false, imageUrl: pawnImage }); 
     },
     startGame() {
       this.diceDisabled = false
@@ -172,7 +193,7 @@ export default {
     },
     resetGame() {
       this.playerProperties = [
-        { position: -1, isFinish: false, imageUrl: this.pawnImages[0] }
+        { position: 0, isFinish: false, imageUrl: this.pawnImages[0] }
       ]
       this.turn = 0;
       this.diceValue = 0;
@@ -244,7 +265,7 @@ export default {
 
 
   .position--1 { bottom: 7%; left: -7.5%; }
-  .position-0 { bottom: 7%; left: -2.5%; }
+  .position-0 { bottom: 7%; left: -7.5%; }
   .position-1 { bottom: 7%; left: 2.5%; }
   .position-2 { bottom: 7%; left: 12.5%; }
   .position-3 { bottom: 7%; left: 22.5%; }
