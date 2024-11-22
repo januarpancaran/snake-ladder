@@ -75,7 +75,7 @@ import pawnImage5 from "@/assets/pawn5.png"
 export default {
   data() {
     return {
-      playerProperties: [{ position: -1, isFinish: false,imageUrl: pawnImage1 }],
+      playerProperties: [{ position: 0, isFinish: false,imageUrl: pawnImage1 }],
       turn: 0,
       diceRolling: false,
       diceValue: 0,
@@ -141,14 +141,6 @@ export default {
     movePlayer() {
       const diceVal = this.diceValue
       let currentPlayer = this.playerProperties[this.turn]
-
-      if (currentPlayer.position === -1) {
-        if (diceVal === 6) {
-          currentPlayer.position = 0
-        } else {
-          this.updateTurn()
-        }
-      } else {
         currentPlayer.position += diceVal
 
         const snakePosition = this.snakes[currentPlayer.position]
@@ -167,7 +159,6 @@ export default {
         } else {
           this.updateTurn(diceVal !== 6)
         }
-      }
       this.disabled = false
     },
     addPlayer() {
