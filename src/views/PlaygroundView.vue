@@ -57,11 +57,33 @@
         >
           Roll Dice
         </button>
+        <button
+          type="button"
+          class="button history-button bg-blue-500"
+          @click="showHistory"
+        >
+          Move(s) History
+        </button>
       </div>
     </div>
 
     <div class="dice-wrapper">
       <p id="dice-result">{{ diceResult }}</p>
+    </div>
+
+    <div
+      class="history-wrapper" v-if="historyVisible"
+    >
+      <h3>Move(s) History</h3>
+      <div  v-for="(history, index) in movesHistory" :key="index">
+        <p><strong>Player-{{ index + 1 }}:</strong></p>
+        <div v-for="(turn, turnIndex) in history" :key="turnIndex">
+          <p>Turn {{ turnIndex + 1 }}: {{ turn.join(' -> ') }}</p>
+        </div>
+        <p>
+          <strong>Walk:</strong> {{ cleanMovesHistory[index].join(' -> ') }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +97,9 @@ import pawnImage5 from "@/assets/pawn5.png"
 export default {
   data() {
     return {
-      playerProperties: [{ position: 0, isFinish: false,imageUrl: pawnImage1 }],
+      playerProperties: [{ position: 1, isFinish: false,imageUrl: pawnImage1 }],
+      movesHistory: [[]],
+      historyVisible: false,
       turn: 0,
       diceRolling: false,
       diceValue: 0,
@@ -126,6 +150,13 @@ export default {
   computed: {
     diceResult() {
       return this.diceValue
+    },
+    cleanMovesHistory() {
+      return this.movesHistory.map((playerMoves) => {
+        const flattenedMoves = playerMoves.flat()
+
+        return flattenedMoves.filter((pos, idx, arr) => idx === 0 || pos !== arr[idx - 1])
+      })
     }
   },
   methods: {
@@ -139,53 +170,63 @@ export default {
       }
     },
     movePlayer() {
-      const diceVal = this.diceValue;
-      const currentPlayer = this.playerProperties[this.turn];
-      let targetPosition = currentPlayer.position + diceVal; 
-      let currentStep = currentPlayer.position;
+      const diceVal = this.diceValue
+      const currentPlayer = this.playerProperties[this.turn]
+      let targetPosition = currentPlayer.position + diceVal
+      let currentStep = currentPlayer.position
+      const playerHistory = []
 
+      playerHistory.push(currentStep)
       const moveStep = () => {
         if (currentStep < targetPosition) {
-          currentStep++;
-          currentPlayer.position = currentStep;
+          currentStep++
+          currentPlayer.position = currentStep
+          playerHistory.push(currentStep)
 
-          setTimeout(moveStep, 300);
+          setTimeout(moveStep, 300)
         } else {
-          const snakePosition = this.snakes[currentStep];
-          const ladderPosition = this.ladders[currentStep];
+          const snakePosition = this.snakes[currentStep]
+          const ladderPosition = this.ladders[currentStep]
 
           if (snakePosition) {
-            currentPlayer.position = snakePosition;
-            finalizeMove();
-          } else if (ladderPosition) {
-            currentPlayer.position = ladderPosition;
-            finalizeMove();
-          } else {
-            finalizeMove();
+            playerHistory.push(snakePosition)
+            currentPlayer.position = snakePosition
+          } 
+          
+          if (ladderPosition) {
+            playerHistory.push(ladderPosition)
+            currentPlayer.position = ladderPosition
           }
-        }
-      };
 
-      const finalizeMove = () => {
+          finalizeMove(playerHistory)
+        }
+      }
+
+      const finalizeMove = (history) => {
+        this.movesHistory[this.turn].push(history)
+
         if (currentPlayer.position >= 100) {
-          currentPlayer.position = 100;
-          currentPlayer.isFinish = true;
+          currentPlayer.position = 100
+          currentPlayer.isFinish = true
           setTimeout(() => {
-            alert(`Player-${this.turn + 1} wins!`);
-          }, 1000);
+            alert(`Player-${this.turn + 1} wins!`)
+          }, 300)
+          this.diceDisabled = true
+          this.gameIsFinish = true
         } else {
-          this.updateTurn(diceVal !== 6);
+          this.updateTurn(diceVal !== 6)
         }
-        this.disabled = false;
-      };
+        this.diceDisabled = false
+      }
 
-      this.disabled = true; 
-      moveStep();
+      this.diceDisabled = true
+      moveStep()
     },
     addPlayer() {
-      const playerIndex = this.playerProperties.length; 
-      const pawnImage = this.pawnImages[playerIndex % this.pawnImages.length];
-      this.playerProperties.push({ position: 0, isFinish: false, imageUrl: pawnImage }); 
+      const playerIndex = this.playerProperties.length
+      const pawnImage = this.pawnImages[playerIndex % this.pawnImages.length]
+      this.playerProperties.push({ position: 1, isFinish: false, imageUrl: pawnImage })
+      this.movesHistory.push([])
     },
     startGame() {
       this.diceDisabled = false
@@ -193,18 +234,23 @@ export default {
     },
     resetGame() {
       this.playerProperties = [
-        { position: 0, isFinish: false, imageUrl: this.pawnImages[0] }
+        { position: 1, isFinish: false, imageUrl: this.pawnImages[0] }
       ]
-      this.turn = 0;
-      this.diceValue = 0;
-      this.gameStarted = false;
-      this.diceDisabled = true;
+      this.movesHistory = [[]]
+      this.historyVisible = false
+      this.turn = 0
+      this.diceValue = 0
+      this.gameStarted = false
+      this.diceDisabled = true
     },
     updateTurn(skipTurn = true) {
       if (skipTurn) {
         this.turn = (this.turn + 1) % this.playerProperties.length
       }
       this.diceDisabled = false
+    },
+    showHistory() {
+      this.historyVisible = !this.historyVisible
     }
   }
 }
@@ -254,7 +300,7 @@ export default {
     z-index: 1000;
   }
   .dice-wrapper {
-    position: absolute;
+    position: relative;
     top: 60%; 
     left: 10px; 
     display: flex;
@@ -263,6 +309,11 @@ export default {
     z-index: 1000;
   }
 
+  .history-wrapper {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    border: 1px solid #000;
+  }
 
   .position--1 { bottom: 7%; left: -7.5%; }
   .position-0 { bottom: 7%; left: -7.5%; }
