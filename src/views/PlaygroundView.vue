@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="dice-wrapper">
+    <div class="dice-wrapper"> 
       <p id="dice-label">Dice Result  </p>
       <div id="dice-result">{{diceResult}}</div>
     </div>
