@@ -19,9 +19,9 @@
           :key="index"
           :class="['player', color[index], { active: index === turn }]"
           :style="{ 
-            fontSize: index === turn ? '15px' : '15px', 
-            padding: index === turn ? '10px 25px' : '10px 25px', 
-            borderRadius: index === turn ? '25px' : '25px',
+            fontSize: '15px', 
+            padding: '10px 25px', 
+            borderRadius: '25px',
           }"
         >
           <p>Player-{{ index + 1 }}: {{ player.position }}</p>
