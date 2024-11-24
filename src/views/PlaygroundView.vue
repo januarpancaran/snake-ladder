@@ -68,7 +68,8 @@
     </div>
 
     <div class="dice-wrapper">
-      <p id="dice-result">{{ diceResult }}</p>
+      <p id="dice-label">Dice Result  </p>
+      <div id="dice-result">{{diceResult}}</div>
     </div>
 
     <div
@@ -284,31 +285,49 @@ export default {
   .player-list {
     position: absolute; 
     top: 12.5%; 
-    left: 10px; 
+    left: 20px; 
     display: flex;
     flex-direction: column;
     gap: 10px; 
     z-index: 1000;
+    background-color: rgba(255, 0, 0, 0.8);
+    padding: 7px 14px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   .controls {
     position: absolute;
     top: 40%; 
-    left: 10px; 
+    left: 20px; 
     display: flex;
     flex-direction: column; 
     gap: 10px; 
     z-index: 1000;
+  }
+  .controls button {
+  border-radius: 25px; 
+  padding: 7px 14px; 
+  display: inline-block;
   }
   .dice-wrapper {
-    position: relative;
-    top: 60%; 
-    left: 10px; 
+    position: absolute;
+    top: 80%; 
+    left: 23px; 
     display: flex;
     flex-direction: column; 
-    gap: 10px; 
+    gap: 6px; 
     z-index: 1000;
   }
-
+  #dice-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+  text-align: center;
+  }
+  #dice-result {
+  text-align: center;
+  }
   .history-wrapper {
     background: rgba(255, 255, 255, 0.9);
     color: black;
