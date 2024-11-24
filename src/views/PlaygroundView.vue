@@ -18,6 +18,11 @@
           v-for="(player, index) in playerProperties"
           :key="index"
           :class="['player', color[index], { active: index === turn }]"
+          :style="{ 
+            fontSize: index === turn ? '15px' : '15px', 
+            padding: index === turn ? '10px 25px' : '10px 25px', 
+            borderRadius: index === turn ? '25px' : '25px',
+          }"
         >
           <p>Player-{{ index + 1 }}: {{ player.position }}</p>
         </div>
@@ -107,7 +112,7 @@ export default {
       diceDisabled: true,
       gameStarted: false,
       color: [
-        'bg-red-500',
+        'bg-red-500' ,
         'bg-blue-500',
         'bg-purple-500',
         'bg-indigo-500',
@@ -289,11 +294,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px; 
-    z-index: 1000;
-    background-color: rgba(255, 0, 0, 0.8);
-    padding: 7px 14px;
-    border-radius: 25px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   .controls {
     position: absolute;
