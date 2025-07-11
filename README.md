@@ -1,34 +1,21 @@
 # Snake Ladder Game
+
 A simple Snake Ladder game built using Vue.js
-<br>
 
-## Prerequisite
-1. Node.js >= v18.3 
+![megaphone](screenshot.png)
 
-## Develop
-1. Fork this repo
-2. Clone your forked repo
-3. Install npm dependencies
+## Tech Stack
 
-`npm install`
+- Node.js
+- Vue.js
+- Tailwind CSS
+- Flowbite
 
-4. Add this repo as upstream
+## How to run this project
 
-`git remote add upstream https://github.com/januarpancaran/snake-ladder.git`
-
-5. Pull the latest commit
-
-`git pull upstream main`
-
-6. Change your branch
-
-`git checkout dev`
-
-7. Push your changes
-
-`git push origin dev`
-<br>
-
-
-## Run
-`npm run dev`
+```bash
+git clone https://github.com/januarpancaran/snake-ladder.git
+cd snake-ladder
+npm install
+npm run dev
+```
